@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThinkSpeak Data Display</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <h1 class="text-gray-800 text-center text-xl md:text-4xl font-bold my-4">🗑️ Smart BIN 🗑️</h1>
+    <div class="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 h-2 mb-4"></div>
+    <h2 class="text-center text-gray-800 text-lg md:text-2xl font-bold p-6">Channel ➡️ <span id="channelName">Loading</span> 🗑️</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 bg-gray-100/30 rounded-lg p-6">
+        <div class="col-span-1 w-4/5 h-full md:size-full"><canvas id="dataChart"></canvas></div>
+        <div id="dataChartBar" class="col-span-1 border-cyan-500 border-r-4 border-l-4 border-b-4 rounded-b-xl w-48 h-64 place-content-end mx-auto my-auto"></div>
+        <div class="text-gray-800 text-center text-lg sm:text-2xl font-bold mt-4">Trash Level </div>
+        <div class="text-gray-800 text-center text-lg sm:text-2xl font-bold mt-4">Trash Level Now</div>
+        <div class="flex justify-center my-4">
+            <button id="todayBtn" class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded mx-2">Today</button>
+            <button id="monthBtn" class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded mx-2">This Month</button>
+            <button id="yearBtn" class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded mx-2">This Year</button>
+        </div>
+        <div id="statusTrash"></div>
+    </div>
+    <div id="map" class="w-3/5 rounded-lg h-64 md:h-96 my-4 mx-auto"></div>
+<script src="script.js"></script>
+</body>
+</html>
