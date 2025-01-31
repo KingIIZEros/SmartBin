@@ -38,7 +38,7 @@ async function fetchData() {
       curentValue = 100;
     }
     curentValue = 100 - curentValue;
-    renderbar([currentValue]);
+    renderbar([curentValue]);
 
     // Get the latest latitude and longitude
     const latestLat = parseFloat(fieldData[fieldData.length - 1].lat);
