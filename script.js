@@ -26,32 +26,14 @@ async function fetchData() {
       lng: feed[`field${fieldLngId}`],
     }));
 
-    const labels = fieldData.map((item) => new Date(item.time).toLocaleTimeString());
-    const values = fieldData.map((item) => parseFloat(item.value));
-
     renderChart(labels, values);
     curentValue = values[values.length - 1];
     
     renderbar([curentValue]);
+    const latestLat = parseFloat(fieldData[fieldData.length - 1].lat);
+    const latestLng = parseFloat(fieldData[fieldData.length - 1].lng);
 
-    // Get the latest entry
-    const latestEntry = fieldData[fieldData.length - 1];
-    
-    // Check if latitude and longitude exist and are valid numbers
-    if (latestEntry.lat && latestEntry.lng) {
-      const latestLat = parseFloat(latestEntry.lat);
-      const latestLng = parseFloat(latestEntry.lng);
-      
-      if (!isNaN(latestLat) && !isNaN(latestLng)) {
-        renderMap(latestLat, latestLng);
-      } else {
-        console.error("Invalid latitude or longitude values");
-        // Optionally, set default coordinates or handle the error
-      }
-    } else {
-      console.error("Latitude or longitude fields are missing in the latest entry");
-      // Optionally, handle missing coordinates
-    }
+    renderMap(latestLat, latestLng);
   } catch (error) {
     console.error("Error fetching data:", error);
   }
