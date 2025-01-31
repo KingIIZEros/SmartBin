@@ -101,9 +101,6 @@ function renderbar(values) {
 
   let statusTrash = document.getElementById("statusTrash");
   statusTrash.innerText = "Trash level : " + curentValue + "%";
-  if (curentValue >= 90) {
-  statusTrash.innerText = "Trash level : " + curentValue + "% (FULL!!)" ;
-}
   statusTrash.className = "text-gray-600 text-xl text-center my-4";
 }
 
