@@ -34,9 +34,6 @@ async function fetchData() {
 
     renderChart(labels, values);
     curentValue = values[values.length - 1];
-    if (curentValue > 100) {
-      curentValue = 100;
-    }
     renderbar([curentValue]);
 
     // Get the latest latitude and longitude
