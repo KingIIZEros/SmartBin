@@ -5,7 +5,9 @@ const fieldId = 1; // Field ID ที่ต้องการดึงข้อ�
 const fieldLatId = 2; // Field ID for latitude
 const fieldLngId = 3; // Field ID for longitude
 
-var curentValue = 0;
+let curentValue = 0;
+let dataChart = null; // To store chart instance
+let map = null; // To store map instance
 
 async function fetchData() {
   try {
@@ -36,10 +38,24 @@ async function fetchData() {
     curentValue = values[values.length - 1];
     renderbar([curentValue]);
 
-    // Get the latest latitude and longitude
-    const latestLat = parseFloat(fieldData[fieldData.length - 1].lat);
-    const latestLng = parseFloat(fieldData[fieldData.length - 1].lng);
-    renderMap(latestLat, latestLng);
+    // Find the latest valid coordinates
+    let latestLat, latestLng;
+    for (let i = fieldData.length - 1; i >= 0; i--) {
+      const lat = parseFloat(fieldData[i].lat);
+      const lng = parseFloat(fieldData[i].lng);
+      
+      if (!isNaN(lat) && !isNaN(lng)) {
+        latestLat = lat;
+        latestLng = lng;
+        break;
+      }
+    }
+
+    if (typeof latestLat !== 'undefined' && typeof latestLng !== 'undefined') {
+      renderMap(latestLat, latestLng);
+    } else {
+      console.error("No valid coordinates available");
+    }
   } catch (error) {
     console.error("Error fetching data:", error);
   }
@@ -47,7 +63,13 @@ async function fetchData() {
 
 function renderChart(labels, data) {
   const ctx = document.getElementById("dataChart").getContext("2d");
-  new Chart(ctx, {
+  
+  // Destroy existing chart
+  if (dataChart) {
+    dataChart.destroy();
+  }
+  
+  dataChart = new Chart(ctx, {
     type: "line",
     data: {
       labels: labels,
@@ -88,6 +110,8 @@ function renderChart(labels, data) {
             display: true,
             text: "Value",
           },
+          suggestedMin: 0,
+          suggestedMax: 100
         },
       },
     },
@@ -97,8 +121,7 @@ function renderChart(labels, data) {
 function renderbar(values) {
   document.getElementById(
     "dataChartBar"
-  ).innerHTML = `<div class="bg-cover rounded-b-lg" style="height:${curentValue}%; background-image: url('https://ichef.bbci.co.uk/ace/ws/800/cpsprodpb/A9FF/production/_114791534_4f6eb12c-d2a0-4cb5-ba03-b5f14bad18ab.jpg.webp');"></div>
-  `;
+  ).innerHTML = `<div class="bg-cover rounded-b-lg" style="height:${curentValue}%; background-image: url('https://ichef.bbci.co.uk/ace/ws/800/cpsprodpb/A9FF/production/_114791534_4f6eb12c-d2a0-4cb5-ba03-b5f14bad18ab.jpg.webp');"></div>`;
 
   let statusTrash = document.getElementById("statusTrash");
   statusTrash.innerText = "Trash level : " + curentValue + "%";
@@ -106,14 +129,24 @@ function renderbar(values) {
 }
 
 function renderMap(lat, lng) {
-  const map = L.map('map').setView([lat, lng], 13);
+  // Cleanup existing map
+  if (map !== null) {
+    map.remove();
+  }
+
+  // Create new map instance
+  map = L.map('map').setView([lat, lng], 13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
+  
   L.marker([lat, lng]).addTo(map)
     .bindPopup('Trash Bin Location')
     .openPopup();
 }
 
-// Update the bar chart when new data is fetched
+// Initial fetch
 fetchData();
+
+// Optional: Add periodic updates every 60 seconds
+// setInterval(fetchData, 60000);
