@@ -2,8 +2,7 @@
 const apiKey = "SSMUEA0BW9YPPOFT"; // API Key ถ้าใช้ Read API Key
 const channelId = "2812389"; // Channel ID ของคุณ
 const fieldId = 1; // Field ID ที่ต้องการดึงข้อมูล
-const fieldLatId = 2; // Field ID for latitude
-const fieldLngId = 3; // Field ID for longitude
+
 
 var curentValue = 0;
 
@@ -102,6 +101,9 @@ function renderbar(values) {
 
   let statusTrash = document.getElementById("statusTrash");
   statusTrash.innerText = "Trash level : " + curentValue + "%";
+  if (curentValue >= 90) {
+  statusTrash.innerText = "Trash level : " + curentValue + "% (FULL!!)" ;
+}
   statusTrash.className = "text-gray-600 text-xl text-center my-4";
 }
 
