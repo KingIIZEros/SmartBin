@@ -26,20 +26,16 @@ async function fetchData() {
       lng: feed[`field${fieldLngId}`],
     }));
 
-    // Prepare Data for Chart
-    const labels = fieldData.map((item) =>
-      new Date(item.time).toLocaleString()
-    );
-    const values = fieldData.map((item) => parseFloat(item.value));
-
     renderChart(labels, values);
     curentValue = values[values.length - 1];
     
     renderbar([curentValue]);
-
-    // Get the latest latitude and longitude
+    console.log(fieldData);  // Log the fetched data to inspect its structure
+    
+    // Then extract latitude and longitude as you normally would
     const latestLat = parseFloat(fieldData[fieldData.length - 1].lat);
     const latestLng = parseFloat(fieldData[fieldData.length - 1].lng);
+
     renderMap(latestLat, latestLng);
   } catch (error) {
     console.error("Error fetching data:", error);
