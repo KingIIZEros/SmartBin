@@ -37,8 +37,8 @@ async function fetchData() {
     renderbar([curentValue]);
 
     // Get the latest latitude and longitude
-    const latestLat = parseFloat(fieldData[fieldData.length - 1].lat);
-    const latestLng = parseFloat(fieldData[fieldData.length - 1].lng);
+    const latestLat = 8.6425943;
+    const latestLng = 99.8954679;
     renderMap(latestLat, latestLng);
   } catch (error) {
     console.error("Error fetching data:", error);
